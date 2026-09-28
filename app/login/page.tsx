@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
@@ -13,7 +13,7 @@ export default function Login() {
     setError('')
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: window.location.origin },
+      options: { emailRedirectTo: window.location.origin + '/app' },
     })
     if (error) {
       setError('Une erreur est survenue. Vérifiez votre adresse email.')

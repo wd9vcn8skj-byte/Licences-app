@@ -1,167 +1,92 @@
-'use client'
+﻿import Link from 'next/link'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { supabase } from './lib/supabase'
-
-type Subscription = {
-  id: string
-  tool_name: string
-  monthly_cost: number
-  seats_paid: number
-  seats_used: number
-  category: string
-  renewal_date: string
-}
+const STRIPE_LINK = 'https://buy.stripe.com/test_00w7sN8dv8gxa5e1wx7ss00'
+const serif = 'font-[family-name:var(--font-fraunces)]'
+const cta =
+  'block rounded-md bg-[#D4622B] px-6 py-4 text-center text-lg text-[#FFF6EE] shadow-[0_3px_0_#A44A1F] active:translate-y-[2px]'
 
 export default function Home() {
-  const router = useRouter()
-  const [subs, setSubs] = useState<Subscription[]>([])
-  const [loading, setLoading] = useState(true)
-  const [checkingAuth, setCheckingAuth] = useState(true)
-
-  const [toolName, setToolName] = useState('')
-  const [monthlyCost, setMonthlyCost] = useState('')
-  const [seatsPaid, setSeatsPaid] = useState('')
-  const [seatsUsed, setSeatsUsed] = useState('')
-  const [category, setCategory] = useState('')
-  const [renewalDate, setRenewalDate] = useState('')
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        router.push('/login')
-      } else {
-        setCheckingAuth(false)
-        loadSubs()
-      }
-    })
-  }, [])
-
-  const loadSubs = async () => {
-    setLoading(true)
-    const { data } = await supabase.from('subscriptions').select('*').order('created_at', { ascending: false })
-    if (data) setSubs(data as Subscription[])
-    setLoading(false)
-  }
-
-  const handleAdd = async (e: React.FormEvent) => {
-    e.preventDefault()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-
-    await supabase.from('subscriptions').insert({
-      user_id: user.id,
-      tool_name: toolName,
-      monthly_cost: parseFloat(monthlyCost) || 0,
-      seats_paid: parseInt(seatsPaid) || 1,
-      seats_used: parseInt(seatsUsed) || 1,
-      category,
-      renewal_date: renewalDate || null,
-    })
-
-    setToolName('')
-    setMonthlyCost('')
-    setSeatsPaid('')
-    setSeatsUsed('')
-    setCategory('')
-    setRenewalDate('')
-    loadSubs()
-  }
-
-  const handleDelete = async (id: string) => {
-    await supabase.from('subscriptions').delete().eq('id', id)
-    loadSubs()
-  }
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    router.push('/login')
-  }
-
-  if (checkingAuth) return null
-
-  const totalAnnuel = subs.reduce((sum, s) => sum + s.monthly_cost * 12, 0)
-  const inutilises = subs.filter((s) => s.seats_used < s.seats_paid)
-  const categoryCounts: Record<string, number> = {}
-  subs.forEach((s) => {
-    if (s.category) categoryCounts[s.category] = (categoryCounts[s.category] || 0) + 1
-  })
-  const doublons = Object.entries(categoryCounts).filter(([, count]) => count > 1)
-
-  const today = new Date()
-  const dans30jours = new Date()
-  dans30jours.setDate(today.getDate() + 30)
-  const renouvellementsProches = subs.filter((s) => {
-    if (!s.renewal_date) return false
-    const d = new Date(s.renewal_date)
-    return d >= today && d <= dans30jours
-  })
-
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: 20, fontFamily: 'sans-serif' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Licences</h1>
-        <button onClick={handleLogout}>Se déconnecter</button>
-      </div>
+    <main className="mx-auto max-w-xl px-5 font-semibold">
+      <header className="flex items-center justify-between py-5">
+        <span className={`${serif} text-lg`}>Licences</span>
+        <Link href="/login" className="text-sm underline underline-offset-4">
+          Se connecter
+        </Link>
+      </header>
 
-      <div style={{ background: '#f5f5f5', padding: 15, borderRadius: 8, marginBottom: 20 }}>
-        <p><strong>Coût annuel total :</strong> {totalAnnuel.toFixed(2)} €</p>
-        {inutilises.length > 0 && (
-          <p style={{ color: '#b45309' }}>⚠️ {inutilises.length} abonnement(s) avec des comptes payés non utilisés</p>
-        )}
-        {doublons.length > 0 && (
-          <p style={{ color: '#b45309' }}>⚠️ Doublons de fonction détectés : {doublons.map(([cat]) => cat).join(', ')}</p>
-        )}
-        {renouvellementsProches.length > 0 && (
-          <p style={{ color: '#dc2626' }}>🔔 {renouvellementsProches.length} renouvellement(s) dans les 30 prochains jours</p>
-        )}
-      </div>
+      <section className="pb-8 pt-8">
+        <h1 className={`${serif} text-4xl leading-[1.1] tracking-tight`}>
+          Vous payez des logiciels <span className="text-[#D4622B]">que personne n&apos;utilise</span>.
+        </h1>
+        <p className="mt-4 max-w-[46ch] text-[#4A4F57]">
+          Licences liste tous vos abonnements, leur coût réel par personne, et vous montre exactement où vous payez
+          pour rien.
+        </p>
 
-      <h2>Ajouter un abonnement</h2>
-      <form onSubmit={handleAdd} style={{ display: 'grid', gap: 10, marginBottom: 30, maxWidth: 400 }}>
-        <input placeholder="Nom de l'outil" value={toolName} onChange={(e) => setToolName(e.target.value)} required style={{ padding: 8 }} />
-        <input placeholder="Coût mensuel (€)" type="number" step="0.01" value={monthlyCost} onChange={(e) => setMonthlyCost(e.target.value)} style={{ padding: 8 }} />
-        <input placeholder="Comptes payés" type="number" value={seatsPaid} onChange={(e) => setSeatsPaid(e.target.value)} style={{ padding: 8 }} />
-        <input placeholder="Comptes utilisés" type="number" value={seatsUsed} onChange={(e) => setSeatsUsed(e.target.value)} style={{ padding: 8 }} />
-        <input placeholder="Catégorie (ex: Communication)" value={category} onChange={(e) => setCategory(e.target.value)} style={{ padding: 8 }} />
-        <input placeholder="Date de renouvellement" type="date" value={renewalDate} onChange={(e) => setRenewalDate(e.target.value)} style={{ padding: 8 }} />
-        <button type="submit" style={{ padding: 10 }}>Ajouter</button>
-      </form>
+        <div className="my-7 grid grid-cols-3 gap-3 border-y border-[#DCD5C6] py-5 text-center">
+          <div>
+            <div className={`${serif} text-2xl text-[#D4622B]`}>49 €</div>
+            <div className="mt-1 text-xs text-[#5A5F67]">par mois, sans engagement</div>
+          </div>
+          <div>
+            <div className={`${serif} text-2xl text-[#D4622B]`}>5 min</div>
+            <div className="mt-1 text-xs text-[#5A5F67]">pour saisir vos outils</div>
+          </div>
+          <div>
+            <div className={`${serif} text-2xl text-[#D4622B]`}>0</div>
+            <div className="mt-1 text-xs text-[#5A5F67]">appel, 0 rendez-vous</div>
+          </div>
+        </div>
 
-      <h2>Vos abonnements</h2>
-      {loading ? (
-        <p>Chargement...</p>
-      ) : subs.length === 0 ? (
-        <p>Aucun abonnement pour l'instant.</p>
-      ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ borderBottom: '2px solid #ddd', textAlign: 'left' }}>
-              <th style={{ padding: 8 }}>Outil</th>
-              <th style={{ padding: 8 }}>Coût/mois</th>
-              <th style={{ padding: 8 }}>Comptes</th>
-              <th style={{ padding: 8 }}>Catégorie</th>
-              <th style={{ padding: 8 }}>Renouvellement</th>
-              <th style={{ padding: 8 }}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {subs.map((s) => (
-              <tr key={s.id} style={{ borderBottom: '1px solid #eee' }}>
-                <td style={{ padding: 8 }}>{s.tool_name}</td>
-                <td style={{ padding: 8 }}>{s.monthly_cost} €</td>
-                <td style={{ padding: 8 }}>{s.seats_used}/{s.seats_paid}</td>
-                <td style={{ padding: 8 }}>{s.category}</td>
-                <td style={{ padding: 8 }}>{s.renewal_date}</td>
-                <td style={{ padding: 8 }}>
-                  <button onClick={() => handleDelete(s.id)}>Supprimer</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+        <a href={STRIPE_LINK} className={cta}>
+          Voir mes abonnements
+        </a>
+        <p className="mt-3 text-center text-xs text-[#6B6F76]">Paiement sécurisé par Stripe · Résiliable à tout moment</p>
+      </section>
+
+      <section className="py-6">
+        {[
+          ['01', 'Une seule liste, tout le monde dedans', "Chaque abonnement, son coût annuel et le nombre de comptes réellement utilisés, même quand chaque service a souscrit dans son coin."],
+          ['02', 'Les doublons sautent aux yeux', 'Deux équipes qui paient deux outils pour faire la même chose : repéré automatiquement, sans recouper à la main.'],
+          ['03', 'Un rappel avant chaque renouvellement', 'Vous décidez de garder ou de couper un outil avant qu’il ne se renouvelle tout seul.'],
+        ].map(([n, t, d]) => (
+          <div key={n} className="flex gap-4 border-t border-[#DCD5C6] py-5 last:border-b">
+            <span className={`${serif} pt-0.5 text-sm text-[#D4622B]`}>{n}</span>
+            <div>
+              <h2 className={`${serif} text-lg leading-snug`}>{t}</h2>
+              <p className="mt-1 text-sm text-[#4A4F57]">{d}</p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section className="py-8">
+        <h2 className={`${serif} mb-4 text-2xl`}>Comment ça marche</h2>
+        <ol className="space-y-3 text-[#333]">
+          <li>1. Vous payez : votre accès est prêt tout de suite.</li>
+          <li>2. Vous saisissez vos abonnements, un par un.</li>
+          <li>3. Vous voyez le coût réel, les doublons et les comptes à couper.</li>
+        </ol>
+      </section>
+
+      <section className="pb-12">
+        <a href={STRIPE_LINK} className={cta}>
+          Voir mes abonnements
+        </a>
+        <p className="mt-3 text-center text-sm text-[#5A5F67]">
+          <strong className="text-[#1A1F26]">49 €/mois</strong>, sans engagement.
+        </p>
+      </section>
+
+      <footer className="border-t border-[#DCD5C6] py-6 text-center text-xs text-[#7A7E85]">
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+          <Link href="/mentions-legales">Mentions légales</Link>
+          <Link href="/cgv">CGV</Link>
+          <Link href="/confidentialite">Confidentialité</Link>
+        </div>
+        <div className="mt-3">Licences — [RAISON SOCIALE À COMPLÉTER] · [SIRET À COMPLÉTER]</div>
+      </footer>
+    </main>
   )
 }
