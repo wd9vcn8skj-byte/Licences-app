@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { supabase } from '../lib/supabase'
 
 const STRIPE_LINK = 'https://buy.stripe.com/test_00w7sN8dv8gxa5e1wx7ss00'
+const PORTAL_LINK = 'https://billing.stripe.com/p/login/test_00w7sN8dv8gxa5e1wx7ss00'
 
 type Subscription = {
   id: string
@@ -124,7 +125,7 @@ export default function Dashboard() {
     <div style={{ maxWidth: 900, margin: '0 auto', padding: 20, fontFamily: 'sans-serif' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Licences</h1>
-        <button onClick={handleLogout}>Se déconnecter</button>
+        <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}><a href={PORTAL_LINK} style={{ color: '#D4622B', textDecoration: 'underline' }}>Gérer mon abonnement</a><button onClick={handleLogout}>Se déconnecter</button></div>
       </div>
 
       <div style={{ background: '#f5f5f5', padding: 15, borderRadius: 8, marginBottom: 20 }}>
@@ -179,3 +180,4 @@ export default function Dashboard() {
     </div>
   )
 }
+
