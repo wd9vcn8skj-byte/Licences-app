@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '../lib/supabase'
 
-const STRIPE_LINK = 'https://buy.stripe.com/test_00w7sN8dv8gxa5e1wx7ss00'
-const PORTAL_LINK = 'https://billing.stripe.com/p/login/test_00w7sN8dv8gxa5e1wx7ss00'
+const STRIPE_LINK = 'https://buy.stripe.com/00w7sN8dv8gxa5e1wx7ss00'
+const PORTAL_LINK = 'https://billing.stripe.com/p/login/00w7sN8dv8gxa5e1wx7ss00'
 
 type Subscription = {
   id: string
@@ -180,4 +180,5 @@ export default function Dashboard() {
     </div>
   )
 }
+
 
