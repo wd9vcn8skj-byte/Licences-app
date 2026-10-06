@@ -85,8 +85,9 @@ export default function Home() {
           <Link href="/cgv">CGV</Link>
           <Link href="/confidentialite">Confidentialité</Link>
         </div>
-        <div className="mt-3">Licences — [RAISON SOCIALE À COMPLÉTER] · [SIRET À COMPLÉTER]</div>
+        <div className="mt-3">Licences — Abdel-Kader Menheim, EI · SIRET 889 152 468 00050</div>
       </footer>
     </main>
   )
 }
+
