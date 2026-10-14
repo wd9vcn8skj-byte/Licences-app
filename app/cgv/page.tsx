@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 
 export const metadata = { title: 'Conditions générales de vente — Licences' }
 
@@ -15,7 +15,7 @@ export default function CGV() {
       <h2 className={h2}>1. Vendeur</h2>
       <p className={p}>
         Abdel-Kader Menheim, entrepreneur individuel (EI), SIRET 889 152 468 00050, 11 rue Raymond Weil, 02400
-        Château-Thierry. Contact : contact.licences@gmail.com.
+        Château-Thierry. Contact : contact@licences-app.fr.
       </p>
 
       <h2 className={h2}>2. Objet</h2>
@@ -36,7 +36,7 @@ export default function CGV() {
       <p className={p}>
         L&apos;abonnement est mensuel, sans engagement, et se renouvelle tacitement. Le client peut le résilier à tout
         moment depuis le bouton « Gérer mon abonnement » de son tableau de bord, ou en écrivant à
-        contact.licences@gmail.com. La résiliation prend effet à la fin de la période déjà payée, jusqu&apos;à laquelle
+        contact@licences-app.fr. La résiliation prend effet à la fin de la période déjà payée, jusqu&apos;à laquelle
         l&apos;accès reste ouvert. Aucun remboursement au prorata n&apos;est dû pour une période entamée.
       </p>
 

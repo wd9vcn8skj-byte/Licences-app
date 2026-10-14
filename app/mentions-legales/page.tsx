@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 
 export const metadata = { title: 'Mentions légales — Licences' }
 
@@ -16,7 +16,7 @@ export default function MentionsLegales() {
         Abdel-Kader Menheim, entrepreneur individuel (EI)<br />
         SIREN : 889 152 468 — SIRET : 889 152 468 00050<br />
         Adresse : 11 rue Raymond Weil, 02400 Château-Thierry, France<br />
-        Email : contact.licences@gmail.com<br />
+        Email : contact@licences-app.fr<br />
         TVA non applicable, art. 293 B du CGI.
       </p>
 
@@ -35,7 +35,7 @@ export default function MentionsLegales() {
       </p>
 
       <h2 className={h2}>Contact</h2>
-      <p className={p}>Pour toute question : contact.licences@gmail.com</p>
+      <p className={p}>Pour toute question : contact@licences-app.fr</p>
     </main>
   )
 }

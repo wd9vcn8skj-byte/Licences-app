@@ -1,4 +1,4 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 
 export const metadata = { title: 'Politique de confidentialité — Licences' }
 
@@ -14,7 +14,7 @@ export default function Confidentialite() {
 
       <h2 className={h2}>Responsable du traitement</h2>
       <p className={p}>
-        Abdel-Kader Menheim, EI, 11 rue Raymond Weil, 02400 Château-Thierry — contact.licences@gmail.com
+        Abdel-Kader Menheim, EI, 11 rue Raymond Weil, 02400 Château-Thierry — contact@licences-app.fr
       </p>
 
       <h2 className={h2}>Données collectées</h2>
@@ -46,7 +46,7 @@ export default function Confidentialite() {
       <h2 className={h2}>Vos droits</h2>
       <p className={p}>
         Vous pouvez accéder à vos données, les rectifier, les effacer, vous opposer à leur traitement, en demander la
-        limitation ou la portabilité, en écrivant à contact.licences@gmail.com. Vous pouvez aussi adresser une
+        limitation ou la portabilité, en écrivant à contact@licences-app.fr. Vous pouvez aussi adresser une
         réclamation à la CNIL (cnil.fr).
       </p>
 

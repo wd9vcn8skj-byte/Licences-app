@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -361,7 +361,7 @@ export default function Dashboard() {
       )}
 
       <footer className="pt-4 text-center text-xs text-[#7A7E85]">
-        Une question ? contact.licences@gmail.com
+        Une question ? contact@licences-app.fr
       </footer>
     </main>
   )
