@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export const metadata = { title: 'Mentions légales — Licences' }
+export const metadata = { title: 'Mentions légales — Licences', alternates: { canonical: '/mentions-legales' } }
 
 const h2 = 'mt-8 font-[family-name:var(--font-fraunces)] text-xl'
 const p = 'mt-2 text-[#4A4F57]'

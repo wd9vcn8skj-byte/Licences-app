@@ -1,4 +1,4 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { Fraunces, Inter } from 'next/font/google'
 import './globals.css'
 
@@ -6,6 +6,7 @@ const fraunces = Fraunces({ subsets: ['latin'], variable: '--font-fraunces', wei
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', weight: ['500', '600'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.licences-app.fr'),
   title: "Licences — Arrêtez de payer des logiciels que personne n'utilise",
   description:
     "Listez vos abonnements logiciels, voyez leur coût réel et repérez les comptes inutilisés et les doublons. 49 €/mois, sans engagement.",

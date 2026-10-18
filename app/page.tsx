@@ -1,9 +1,11 @@
-﻿import Link from 'next/link'
+import Link from 'next/link'
 
 const STRIPE_LINK = 'https://buy.stripe.com/00w7sN8dv8gxa5e1wx7ss00'
 const serif = 'font-[family-name:var(--font-fraunces)]'
 const cta =
   'block rounded-md bg-[#D4622B] px-6 py-4 text-center text-lg text-[#FFF6EE] shadow-[0_3px_0_#A44A1F] active:translate-y-[2px]'
+
+export const metadata = { alternates: { canonical: '/' } }
 
 export default function Home() {
   return (
