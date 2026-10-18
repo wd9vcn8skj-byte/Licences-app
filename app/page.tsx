@@ -47,6 +47,12 @@ export default function Home() {
         <p className="mt-3 text-center text-xs text-[#6B6F76]">Paiement sécurisé par Stripe · Résiliable à tout moment</p>
       </section>
 
+      <p className="pb-4 text-center text-sm">
+        <Link href="/calculateur" className="underline underline-offset-4">
+          Pas encore décidé ? Calculez gratuitement ce que vous perdez
+        </Link>
+      </p>
+
       <section className="py-6">
         {[
           ['01', 'Une seule liste, tout le monde dedans', "Chaque abonnement, son coût annuel et le nombre de comptes réellement utilisés, même quand chaque service a souscrit dans son coin."],
@@ -85,6 +91,7 @@ export default function Home() {
         <div className="flex flex-wrap justify-center gap-x-4 gap-y-1">
           <Link href="/mentions-legales">Mentions légales</Link>
           <Link href="/cgv">CGV</Link>
+          <Link href="/calculateur">Calculateur gratuit</Link>
           <Link href="/confidentialite">Confidentialité</Link>
         </div>
         <div className="mt-3">Licences — Abdel-Kader Menheim, EI · SIRET 889 152 468 00050</div>
