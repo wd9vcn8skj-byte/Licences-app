@@ -32,7 +32,7 @@ export default function Confidentialite() {
 
       <h2 className={h2}>Sous-traitants</h2>
       <p className={p}>
-        Supabase (base de données et authentification), Vercel (hébergement du site), Stripe (paiement et facturation).
+        Supabase (base de données et authentification), Cloudflare (hébergement du site), Stripe (paiement et facturation).
         Certains de ces prestataires peuvent traiter des données hors de l&apos;Union européenne ; ces transferts sont
         encadrés par les clauses contractuelles types de la Commission européenne.
       </p>

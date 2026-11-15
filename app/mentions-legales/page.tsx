@@ -25,7 +25,7 @@ export default function MentionsLegales() {
 
       <h2 className={h2}>Hébergement</h2>
       <p className={p}>
-        Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis — vercel.com
+        Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107, États-Unis — cloudflare.com
       </p>
 
       <h2 className={h2}>Propriété intellectuelle</h2>
