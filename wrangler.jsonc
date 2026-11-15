@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "licences-app",
+  "main": "custom-worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "services": [{ "binding": "WORKER_SELF_REFERENCE", "service": "licences-app" }],
+  "observability": { "enabled": true },
+  // Remplace le cron de vercel.json : appel quotidien de /api/keepalive (06:00 UTC)
+  "triggers": { "crons": ["0 6 * * *"] }
+}
