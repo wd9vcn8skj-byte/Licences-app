@@ -1,7 +1,11 @@
 ﻿import Stripe from 'stripe'
 import { supabaseAdmin } from '../../lib/supabase-admin'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+// Client HTTP basé sur fetch : indispensable sur Cloudflare Workers (le client Node par défaut
+// y reste bloqué), et fonctionne aussi sur Node.
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, { httpClient: Stripe.createFetchHttpClient() })
+// Vérification de signature via Web Crypto (la version synchrone ne marche pas sur Workers).
+const cryptoProvider = Stripe.createSubtleCryptoProvider()
 
 function getCustomerId(c: string | Stripe.Customer | Stripe.DeletedCustomer | null): string | null {
   if (!c) return null
@@ -20,8 +24,16 @@ export async function POST(req: Request) {
 
   let event: Stripe.Event
   try {
-    event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET!)
-  } catch {
+    event = await stripe.webhooks.constructEventAsync(
+      body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET!,
+      undefined,
+      cryptoProvider,
+    )
+  } catch (e) {
+    const err = e as { type?: string; message?: string }
+    console.error('stripe webhook', err?.type, err?.message)
     return new Response('Signature invalide', { status: 400 })
   }
 
